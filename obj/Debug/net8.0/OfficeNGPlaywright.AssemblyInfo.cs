@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OfficeNGPlaywright")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2ba2e21f4897f2fe330b37e2461bdceb46e09786")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+33142dcc3db23738103cd1ab6cc18620f8806702")]
 [assembly: System.Reflection.AssemblyProductAttribute("OfficeNGPlaywright")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OfficeNGPlaywright")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
