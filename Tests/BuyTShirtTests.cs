@@ -58,13 +58,13 @@ namespace PlaywrightDemo.Tests
             Assert.True(await _page.Locator("//img[@alt='Sauce Labs Bolt T-Shirt']").IsVisibleAsync());
 
             // Click the "Add to Cart" button.
-            await buyTShirtPage.ClickAddToCartAsync();
+            await buyTShirtPage.AddTShirtToCartAsync();
 
             // Verify that the T-shirt is added to the cart successfully.
             Assert.True(await _page.Locator("#remove").IsVisibleAsync());
 
             // Navigate to the cart by clicking the cart icon or accessing the cart page directly.
-            await buyTShirtPage.ClickCartAsync();
+            await buyTShirtPage.GoToCartAsync();
 
             // Verify that the cart page is displayed.
             Assert.Equal("https://www.saucedemo.com/cart.html", _page.Url);
@@ -76,7 +76,7 @@ namespace PlaywrightDemo.Tests
             Assert.Equal("1", itemQuantity);
 
             // Click the "Checkout" button.
-            await buyTShirtPage.ClickCheckoutAsync();
+            await buyTShirtPage.GoToCheckoutAsync();
 
             // Verify that the checkout information page is displayed.
             Assert.Equal("https://www.saucedemo.com/checkout-step-one.html", _page.Url);
@@ -85,7 +85,7 @@ namespace PlaywrightDemo.Tests
             await buyTShirtPage.EnterCheckoutInfoAsync("Shola", "Olagbemisoye", "110123");
 
             // Click the "Continue" button.
-            await buyTShirtPage.ClickContinueAsync();
+            await buyTShirtPage.ContinueToCheckoutStepTwoAsync();
 
             // Verify that the order summary page is displayed, showing the T-shirt details and the total amount.
             Assert.Equal("https://www.saucedemo.com/checkout-step-two.html", _page.Url);
@@ -98,14 +98,14 @@ namespace PlaywrightDemo.Tests
             Assert.Equal("Total: $17.27", total);
 
             // Click the "Finish" button.
-            await buyTShirtPage.ClickFinishAsync();
+            await buyTShirtPage.CompletePurchaseAsync();
 
             // Verify that the order confirmation page is displayed, indicating a successful purchase.
             Assert.Equal("https://www.saucedemo.com/checkout-complete.html", _page.Url);
-            await buyTShirtPage.VerifyOrderConfirmationDisplayedAsync();
+            await buyTShirtPage.VerifyOrderConfirmationAsync();
 
             // Logout from the application.
-            await buyTShirtPage.ClickLogoutButtonAsync();
+            await buyTShirtPage.LogoutAsync();
 
             // Verify that the user is successfully logged out and redirected to the login page.
             Assert.Equal("https://www.saucedemo.com/", _page.Url);

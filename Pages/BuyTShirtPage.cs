@@ -18,11 +18,13 @@ namespace PlaywrightDemo.Pages
             _page = page ?? throw new ArgumentNullException(nameof(page));
         }
 
+        // Navigate to the Sauce Labs Sample Application
         public async Task GotoAsync()
         {
             await _page.GotoAsync(BaseUrl, new PageGotoOptions { Timeout = 60000 });
         }
 
+        // Accept cookies if presented
         public async Task AcceptCookiesAsync()
         {
             const string acceptCookiesSelector = "//span[normalize-space()='Accept']";
@@ -32,6 +34,7 @@ namespace PlaywrightDemo.Pages
             }
         }
 
+        // Login with provided username and password
         public async Task LoginAsync(string username, string password)
         {
             await _page.FillAsync("#user-name", username);
@@ -40,28 +43,26 @@ namespace PlaywrightDemo.Pages
             await _page.WaitForURLAsync("https://www.saucedemo.com/inventory.html");
         }
 
+        // Click on the specified T-shirt image
         public async Task ClickTShirtAsync()
         {
             await _page.ClickAsync("img[alt='Sauce Labs Bolt T-Shirt']");
         }
 
-        public async Task ClickAddToCartAsync()
+        // Add the selected T-shirt to the cart
+        public async Task AddTShirtToCartAsync()
         {
             await _page.ClickAsync("#add-to-cart");
         }
 
-        public async Task ClickCartAsync()
+        // Navigate to the cart page
+        public async Task GoToCartAsync()
         {
             await _page.ClickAsync(".shopping_cart_link");
             await _page.WaitForURLAsync(CartUrl);
         }
 
-        public async Task ClickCheckoutAsync()
-        {
-            await _page.ClickAsync("#checkout");
-            await _page.WaitForURLAsync(CheckoutStepOneUrl);
-        }
-
+        // Get details of the item in the cart
         public async Task<(string Name, string Price, string Quantity)> GetCartItemDetailsAsync()
         {
             var itemName = await _page.InnerTextAsync("[data-test='inventory-item-name']");
@@ -71,19 +72,29 @@ namespace PlaywrightDemo.Pages
             return (itemName, itemPrice, itemQuantity);
         }
 
-        public async Task EnterCheckoutInfoAsync(string firstname, string lastname, string postalcode)
+        // Proceed to checkout from the cart
+        public async Task GoToCheckoutAsync()
         {
-            await _page.FillAsync("#first-name", firstname);
-            await _page.FillAsync("#last-name", lastname);
-            await _page.FillAsync("#postal-code", postalcode);
+            await _page.ClickAsync("#checkout");
+            await _page.WaitForURLAsync(CheckoutStepOneUrl);
         }
 
-        public async Task ClickContinueAsync()
+        // Enter checkout information
+        public async Task EnterCheckoutInfoAsync(string firstName, string lastName, string postalCode)
+        {
+            await _page.FillAsync("#first-name", firstName);
+            await _page.FillAsync("#last-name", lastName);
+            await _page.FillAsync("#postal-code", postalCode);
+        }
+
+        // Continue from checkout step one to step two
+        public async Task ContinueToCheckoutStepTwoAsync()
         {
             await _page.ClickAsync("#continue");
             await _page.WaitForURLAsync(CheckoutStepTwoUrl);
         }
 
+        // Get order summary details
         public async Task<(string Name, string Price, string Quantity, string Subtotal, string Tax, string Total)> OrderSummaryDetailsAsync()
         {
             var itemName = await _page.InnerTextAsync("[data-test='inventory-item-name']");
@@ -96,43 +107,43 @@ namespace PlaywrightDemo.Pages
             return (itemName, itemPrice, itemQuantity, subtotal, tax, total);
         }
 
-        public async Task ClickFinishAsync()
+        // Complete the purchase by clicking Finish
+        public async Task CompletePurchaseAsync()
         {
             await _page.ClickAsync("#finish");
             await _page.WaitForURLAsync(CheckoutCompleteUrl);
         }
 
-        public async Task VerifyOrderConfirmationDisplayedAsync()
+        // Verify order confirmation after purchase
+        public async Task VerifyOrderConfirmationAsync()
         {
-            var header = await _page.InnerTextAsync("h2.complete-header[data-test='complete-header']");
-            if (!header.Contains("Thank you for your order!"))
-            {
-                throw new Exception("Order confirmation header is not displayed correctly.");
-            }
-
-            var text = await _page.InnerTextAsync("div.complete-text[data-test='complete-text']");
-            if (!text.Contains("Your order has been dispatched, and will arrive just as fast as the pony can get there!"))
-            {
-                throw new Exception("Order confirmation text is not displayed correctly.");
-            }
-
-            var backButton = _page.Locator("#back-to-products");
-            if (!await backButton.IsVisibleAsync())
-            {
-                throw new Exception("Back to products button is not visible.");
-            }
+        await _page.WaitForSelectorAsync("h2.complete-header[data-test='complete-header']");
+        var header = await _page.InnerTextAsync("h2.complete-header[data-test='complete-header']");
+        if (!header.Contains("Thank you for your order!"))
+        {
+            throw new InvalidOperationException("Order confirmation header is not displayed correctly.");
         }
 
-        public async Task ClickLogoutButtonAsync()
+        await _page.WaitForSelectorAsync("div.complete-text[data-test='complete-text']");
+        var text = await _page.InnerTextAsync("div.complete-text[data-test='complete-text']");
+        if (!text.Contains("Your order has been dispatched, and will arrive just as fast as the pony can get there!"))
+        {
+            throw new InvalidOperationException("Order confirmation text is not displayed correctly.");
+        }
+
+        var backButton = await _page.QuerySelectorAsync("#back-to-products");
+        if (backButton == null || !await backButton.IsVisibleAsync())
+        {
+            throw new InvalidOperationException("Back to products button is not visible.");
+        }
+    }
+
+        // Logout from the application
+        public async Task LogoutAsync()
         {
             await _page.ClickAsync("#react-burger-menu-btn");
             await _page.ClickAsync("#logout_sidebar_link");
             await _page.WaitForURLAsync(BaseUrl);
-        }
-
-        public async Task<string> GetErrorMessageAsync()
-        {
-            return await _page.InnerTextAsync("//div[@id='notistack-snackbar']");
         }
     }
 }

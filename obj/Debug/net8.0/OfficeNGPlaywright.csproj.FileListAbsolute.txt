@@ -404,3 +404,4 @@ C:\Users\shola.olagbemisoye\IdeaProjects\PlaywrightProject\OfficeNG Project\obj\
 C:\Users\shola.olagbemisoye\IdeaProjects\PlaywrightProject\OfficeNG Project\obj\Debug\net8.0\OfficeNGPlaywright.pdb
 C:\Users\shola.olagbemisoye\IdeaProjects\PlaywrightProject\OfficeNG Project\obj\Debug\net8.0\OfficeNGPlaywright.genruntimeconfig.cache
 C:\Users\shola.olagbemisoye\IdeaProjects\PlaywrightProject\OfficeNG Project\obj\Debug\net8.0\ref\OfficeNGPlaywright.dll
+C:\Users\shola.olagbemisoye\IdeaProjects\PlaywrightProject\OfficeNG Project\obj\Debug\net8.0\OfficeNGPlaywright.sourcelink.json
